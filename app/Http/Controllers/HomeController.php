@@ -20,14 +20,15 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
+     * @param MenuService $service
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index(MenuService $service)
     {
         $restaurant_ids = [1];
 
-        $categories = $service->getMenuWithCategory($restaurant_ids);
+        $menus = $service->getMenuWithCategory($restaurant_ids);
 
-        return view('home', compact('categories'));
+        return view('home', compact('menus'));
     }
 }
