@@ -4,7 +4,14 @@
             <div class="col-md-8">
                 <card-component>
                     <template slot="title">My Menu Items</template>
-                    <template slot="body">Content Will Come here</template>
+                    <template slot="body">
+                        <div class="section">
+                            <multiselect v-model="menuCategory" :options="categories"></multiselect>
+                        </div>
+
+                        <menu-group :items="currentMenuItems"></menu-group>
+
+                    </template>
                 </card-component>
             </div>
             <div class="col-md-4">
@@ -18,11 +25,48 @@
 </template>
 
 <script>
+
+    import _ from 'lodash';
+
+    import Multiselect from 'vue-multiselect';
+
+    import MenuGroup from './MenuGroups';
+
     export default {
+        name: "MenuContainer",
+        components: {
+            Multiselect, MenuGroup
+        },
         props: [
             'items'
         ],
-        name: "MenuContainer"
+        data () {
+            return {
+                menuCategory: '',
+                categories: [],
+            }
+        },
+        created () {
+
+            _.forEach(this.items, (item, key) => {
+
+                this.categories.push(key);
+
+            });
+
+            this.menuCategory = this.categories[0];
+
+        },
+        computed: {
+
+            currentMenuItems () {
+
+                return this.items[this.menuCategory]
+
+            }
+
+        }
+
     }
 </script>
 
