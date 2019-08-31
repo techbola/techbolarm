@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Menu;
+use App\Services\MenuService;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -22,10 +22,12 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(MenuService $service)
     {
-        $menus = Menu::all();
+        $restaurant_ids = [1];
 
-        return view('home', compact('menus'));
+        $categories = $service->getMenuWithCategory($restaurant_ids);
+
+        return view('home', compact('categories'));
     }
 }

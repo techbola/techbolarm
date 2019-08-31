@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    <menu-container :items="{{ json_encode($menus) }}"></menu-container>
+                    <menu-container :items="{{ json_encode($categories) }}"></menu-container>
 
                 </div>
             </div>
