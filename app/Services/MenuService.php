@@ -8,10 +8,10 @@ use App\Models\Menu;
 class MenuService
 {
 
-    public function getMenuWithCategory(array $restaurantIds)
+    public function getMenuWithCategory($restaurantId)
     {
 
-        $categories = Menu::whereIn('restaurant_id', $restaurantIds)
+        $categories = Menu::where('restaurant_id', $restaurantId)
             ->get()
             ->groupBy('category.name');
 

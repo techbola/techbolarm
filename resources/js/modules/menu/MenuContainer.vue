@@ -18,7 +18,12 @@
                 <card-component>
                     <template slot="title">Add Menu Items</template>
                     <template slot="body">
-                        <menu-add-form :categories="categories"></menu-add-form>
+                        <menu-add-form
+                                :categories="categories"
+                                :restaurant-id="restaurantId"
+                                v-on:newMenuItemAdded="handleNewMenuItem"
+                        >
+                        </menu-add-form>
                     </template>
                 </card-component>
             </div>
@@ -42,12 +47,14 @@
             Multiselect, MenuGroup, MenuAddForm
         },
         props: [
-            'items'
+            'items',
+            'restaurantId'
         ],
         data () {
             return {
                 menuCategory: '',
                 categories: [],
+                localItems: ''
             }
         },
         created () {
@@ -59,13 +66,25 @@
             });
 
             this.menuCategory = this.categories[0];
+            this.localItems = this.items;
 
         },
         computed: {
 
             currentMenuItems () {
 
-                return this.items[this.menuCategory]
+                return this.localItems[this.menuCategory]
+
+            }
+
+        },
+        methods: {
+
+            handleNewMenuItem (item, category) {
+
+                // console.log('item', item);
+
+                this.localItems[category].unshift(item);
 
             }
 
