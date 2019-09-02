@@ -17,7 +17,9 @@
             <div class="col-md-4">
                 <card-component>
                     <template slot="title">Add Menu Items</template>
-                    <template slot="body">Form Will Come here</template>
+                    <template slot="body">
+                        <menu-add-form :categories="categories"></menu-add-form>
+                    </template>
                 </card-component>
             </div>
         </div>
@@ -32,10 +34,12 @@
 
     import MenuGroup from './MenuGroups';
 
+    import MenuAddForm from './MenuAddForm';
+
     export default {
         name: "MenuContainer",
         components: {
-            Multiselect, MenuGroup
+            Multiselect, MenuGroup, MenuAddForm
         },
         props: [
             'items'
