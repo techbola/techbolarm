@@ -2,7 +2,7 @@
     <div class="restaurant_group__wrapper mb-5">
 
         <div class="row">
-            <div class="col-md-4 mb-4" v-for="restaurant in restaurants" :key="restaurant.id">
+            <div class="col-md-4 mb-4" v-for="restaurant in localRestaurants" :key="restaurant.id">
                 <card-component>
                     <template slot="title">{{ restaurant.name }}</template>
                     <template slot="body">{{ restaurant.location }}</template>
@@ -34,19 +34,26 @@
 
     import RestaurantAddForm from './RestaurantAddForm';
 
+    import axios from 'axios';
+
     export default {
         name: "RestaurantGroup",
         props: ['restaurants'],
         components: {
             RestaurantAddForm
         },
+        data () {
+            return {
+                localRestaurants: []
+            }
+        },
         created () {
-            console.log('restaurant length', this.restaurants.length);
+            this.localRestaurants = this.restaurants;
         },
         computed: {
 
             showAddForm () {
-                return (this.restaurants.length < 5) ? true : false;
+                return (this.localRestaurants.length < 6) ? true : false;
             }
 
         },
@@ -64,7 +71,17 @@
             },
             handleSaveRestaurant (restaurant) {
 
-                console.log('restaurant', restaurant);
+                axios.post('/api/restaurant', restaurant)
+                    .then(response => {
+
+                        this.localRestaurants.unshift(response.data);
+
+                        this.$modal.hide('add-new-restaurant');
+
+                    })
+                    .catch(error => {
+                        console.log('error', error.response)
+                    });
 
             }
 

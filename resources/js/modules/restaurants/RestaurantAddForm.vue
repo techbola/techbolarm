@@ -7,6 +7,7 @@
                     type="text"
                     class="form-control"
                     placeholder="Enter restaurant name"
+                    name="name"
                     v-model="restaurant.name">
             <div
                     class="validation-message"
@@ -15,15 +16,16 @@
         </div>
 
         <div class="form-group">
-            <label for="address">Address</label>
+            <label for="location">Address</label>
             <input
                     type="text"
                     class="form-control"
                     placeholder="Enter restaurant address"
-                    v-model="restaurant.address">
+                    v-model="restaurant.location"
+                    name="location">
             <div
                     class="validation-message"
-                    v-text="validation.getMessage('address')">
+                    v-text="validation.getMessage('location')">
             </div>
         </div>
 
@@ -33,7 +35,8 @@
                     type="number"
                     class="form-control"
                     placeholder="Enter restaurant tables"
-                    v-model="restaurant.tables">
+                    v-model="restaurant.tables"
+                    name="tables">
             <div
                     class="validation-message"
                     v-text="validation.getMessage('table_no')">
@@ -70,7 +73,7 @@
 
                 return {
                     name: '',
-                    address: '',
+                    location: '',
                     tables: 0,
                 }
 

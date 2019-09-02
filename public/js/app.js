@@ -2168,6 +2168,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2185,7 +2188,7 @@ __webpack_require__.r(__webpack_exports__);
     emptyRestaurant: function emptyRestaurant() {
       return {
         name: '',
-        address: '',
+        location: '',
         tables: 0
       };
     },
@@ -2211,6 +2214,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RestaurantAddForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RestaurantAddForm */ "./resources/js/modules/restaurants/RestaurantAddForm.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2244,18 +2249,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "RestaurantGroup",
   props: ['restaurants'],
   components: {
     RestaurantAddForm: _RestaurantAddForm__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
+  data: function data() {
+    return {
+      localRestaurants: []
+    };
+  },
   created: function created() {
-    console.log('restaurant length', this.restaurants.length);
+    this.localRestaurants = this.restaurants;
   },
   computed: {
     showAddForm: function showAddForm() {
-      return this.restaurants.length < 5 ? true : false;
+      return this.localRestaurants.length < 6 ? true : false;
     }
   },
   methods: {
@@ -2266,7 +2277,15 @@ __webpack_require__.r(__webpack_exports__);
       this.$modal.hide('add-new-restaurant');
     },
     handleSaveRestaurant: function handleSaveRestaurant(restaurant) {
-      console.log('restaurant', restaurant);
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/restaurant', restaurant).then(function (response) {
+        _this.localRestaurants.unshift(response.data);
+
+        _this.$modal.hide('add-new-restaurant');
+      })["catch"](function (error) {
+        console.log('error', error.response);
+      });
     }
   }
 });
@@ -38570,7 +38589,11 @@ var render = function() {
           }
         ],
         staticClass: "form-control",
-        attrs: { type: "text", placeholder: "Enter restaurant name" },
+        attrs: {
+          type: "text",
+          placeholder: "Enter restaurant name",
+          name: "name"
+        },
         domProps: { value: _vm.restaurant.name },
         on: {
           input: function($event) {
@@ -38589,33 +38612,37 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "address" } }, [_vm._v("Address")]),
+      _c("label", { attrs: { for: "location" } }, [_vm._v("Address")]),
       _vm._v(" "),
       _c("input", {
         directives: [
           {
             name: "model",
             rawName: "v-model",
-            value: _vm.restaurant.address,
-            expression: "restaurant.address"
+            value: _vm.restaurant.location,
+            expression: "restaurant.location"
           }
         ],
         staticClass: "form-control",
-        attrs: { type: "text", placeholder: "Enter restaurant address" },
-        domProps: { value: _vm.restaurant.address },
+        attrs: {
+          type: "text",
+          placeholder: "Enter restaurant address",
+          name: "location"
+        },
+        domProps: { value: _vm.restaurant.location },
         on: {
           input: function($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.$set(_vm.restaurant, "address", $event.target.value)
+            _vm.$set(_vm.restaurant, "location", $event.target.value)
           }
         }
       }),
       _vm._v(" "),
       _c("div", {
         staticClass: "validation-message",
-        domProps: { textContent: _vm._s(_vm.validation.getMessage("address")) }
+        domProps: { textContent: _vm._s(_vm.validation.getMessage("location")) }
       })
     ]),
     _vm._v(" "),
@@ -38632,7 +38659,11 @@ var render = function() {
           }
         ],
         staticClass: "form-control",
-        attrs: { type: "number", placeholder: "Enter restaurant tables" },
+        attrs: {
+          type: "number",
+          placeholder: "Enter restaurant tables",
+          name: "tables"
+        },
         domProps: { value: _vm.restaurant.tables },
         on: {
           input: function($event) {
@@ -38695,7 +38726,7 @@ var render = function() {
       "div",
       { staticClass: "row" },
       [
-        _vm._l(_vm.restaurants, function(restaurant) {
+        _vm._l(_vm.localRestaurants, function(restaurant) {
           return _c(
             "div",
             { key: restaurant.id, staticClass: "col-md-4 mb-4" },
