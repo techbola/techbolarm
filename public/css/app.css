@@ -10649,3 +10649,7 @@ a.text-dark:focus {
   font-size: 0.8em;
 }
 
+.container-padding {
+  padding: 10px;
+}
+
