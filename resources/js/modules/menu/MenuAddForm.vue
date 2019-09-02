@@ -103,6 +103,7 @@
                     .then(response => {
 
                         // console.log('response', response.data);
+
                         this.$emit('newMenuItemAdded', response.data, postData.category);
 
                         this.food = this.emptyFoodItem();
